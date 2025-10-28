@@ -32,6 +32,7 @@ Script.serveEvent("CSK_FTPClient.OnNewPassword", "FTPClient_OnNewPassword")
 Script.serveEvent("CSK_FTPClient.OnNewPassiveModeStatus", "FTPClient_OnNewPassiveModeStatus")
 Script.serveEvent('CSK_FTPClient.OnNewStatusAsyncMode', 'FTPClient_OnNewStatusAsyncMode')
 Script.serveEvent('CSK_FTPClient.OnNewStatusVerboseMode', 'FTPClient_OnNewStatusVerboseMode')
+Script.serveEvent('CSK_FTPClient.OnNewStatusPathToLocalFile', 'FTPClient_OnNewStatusPathToLocalFile')
 
 Script.serveEvent("CSK_FTPClient.OnNewIPCheck", "FTPClient_OnNewIPCheck")
 
@@ -157,6 +158,7 @@ local function handleOnExpiredTmrFTPClient()
     Script.notifyEvent('FTPClient_OnNewStatusConnected', ftpClient_Model.ftpClient:isConnected())
   end
 
+  Script.notifyEvent("FTPClient_OnNewStatusPathToLocalFile", ftpClient_Model.sourceFilePath)
   Script.notifyEvent("FTPClient_OnNewStatusRegisteredEventName", ftpClient_Model.registeredEventName)
   Script.notifyEvent("FTPClient_OnNewStatusDataType", ftpClient_Model.dataType)
   Script.notifyEvent("FTPClient_OnNewStatusAutoFilename", ftpClient_Model.autoFilename)
@@ -297,6 +299,16 @@ local function setVerboseMode(status)
   ftpClient_Model.parameters.verboseMode = status
 end
 Script.serveFunction('CSK_FTPClient.setVerboseMode', setVerboseMode)
+
+local function setLocalPath(path)
+  ftpClient_Model.sourceFilePath = path
+end
+Script.serveFunction('CSK_FTPClient.setLocalPath', setLocalPath)
+
+local function putFileViaUI()
+  ftpClient_Model.putFile(ftpClient_Model.sourceFilePath)
+end
+Script.serveFunction('CSK_FTPClient.putFileViaUI', putFileViaUI)
 
 local function setRegistereEventName(name)
   _G.logger:fine(nameOfModule .. ': Set eventname to: ' .. tostring(name))

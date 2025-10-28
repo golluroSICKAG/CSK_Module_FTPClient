@@ -135,6 +135,10 @@ It is possible to register to events of other apps to put the received data to t
                     <desc>Notify if module can be used on device.</desc>
                     <param desc="Status" multiplicity="1" name="status" type="bool"/>
                 </event>
+                <event name="OnNewStatusPathToLocalFile">
+                    <desc>Notify path to local file to send to FTP server.</desc>
+                    <param desc="Path" multiplicity="1" name="path" type="string"/>
+                </event>
                 <function name="pageCalled">
                     <desc>Function to register "OnResume" of the module UI (only as helper function).</desc>
                     <return desc="Empty string (only needed to simplify binding)." multiplicity="1" name="empty" type="string"/>
@@ -288,6 +292,18 @@ If TRUE it will send the content in its own thread, but other apps can further r
                 <function name="resetModule">
                     <desc>Function to reset main configuration of module.</desc>
                 </function>
+                <function name="putFile">
+                    <desc>Function to put a local file to the FTP server.</desc>
+                    <param desc="Source path of the file to upload." multiplicity="1" name="localSource" type="string"/>
+                    <param desc="Target name of the file to upload. Can be a relative or absolute path in FTP path notation." multiplicity="?" name="destination" type="string"/>
+                </function>
+                <function name="setLocalPath">
+                    <desc>Function to set path to local file to send to FTP server.</desc>
+                    <param desc="Path" multiplicity="1" name="path" type="string"/>
+                </function>
+                <function name="putFileViaUI">
+                    <desc>Function to send predefined file (see 'setLocalPath') to FTP server.</desc>
+                </function>
             </serves>
         </crown>
         <crown name="FTPClient_FC">
@@ -322,7 +338,7 @@ If TRUE it will send the content in its own thread, but other apps can further r
             </crown>
         </crown>
         <meta key="author">SICK AG</meta>
-        <meta key="version">4.1.0</meta>
+        <meta key="version">4.2.0</meta>
         <meta key="priority">low</meta>
         <meta key="copy-protected">false</meta>
         <meta key="read-protected">false</meta>

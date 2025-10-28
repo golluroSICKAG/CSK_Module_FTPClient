@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## Release 4.2.0
+
+### New features
+- Function 'putFile' to transfer files to FTP server
+
 ## Release 4.1.0
 
 ### New features
