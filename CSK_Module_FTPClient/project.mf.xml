@@ -34,6 +34,7 @@ It is possible to register to events of other apps to put the received data to t
                 <desc>Type of data to save on FTP server.</desc>
                 <item desc="Store STRING data as .dat file" name="DATA">DATA</item>
                 <item desc="Store data as JPG image file." name="JPG">JPG</item>
+                <item desc="Store binary data as JPG image file." name="RAW_JPG">RAW_JPG</item>
             </enum>
             <serves>
                 <event name="OnNewServerIP">
@@ -135,6 +136,55 @@ It is possible to register to events of other apps to put the received data to t
                     <desc>Notify if module can be used on device.</desc>
                     <param desc="Status" multiplicity="1" name="status" type="bool"/>
                 </event>
+                <event name="OnNewStatusPathToLocalFile">
+                    <desc>Notify path to local file to send to FTP server.</desc>
+                    <param desc="Path" multiplicity="1" name="path" type="string"/>
+                </event>
+                <event name="OnNewStatusMode">
+                    <desc>Notify mode of FTP connection to use.</desc>
+                    <param desc="Mode" multiplicity="1" name="mode" type="string"/>
+                </event>
+                <event name="OnNewStatusSFTPPrivateKeyPath">
+                    <desc>Notify path to private key file for SFTP connection.</desc>
+                    <param desc="Path" multiplicity="1" name="path" type="string"/>
+                </event>
+                <event name="OnNewStatusClearPrivateKeyPassword">
+                    <desc>Clear private key password within UI.</desc>
+                    <param desc="Empty string." multiplicity="1" name="empty" type="string"/>
+                </event>
+                <event name="OnNewStatusSFTPPublicKeyPath">
+                    <desc>Notify path to public key for SFTP connection.</desc>
+                    <param desc="Path" multiplicity="1" name="path" type="string"/>
+                </event>
+                <event name="OnNewStatusKnownHostFilePath">
+                    <desc>Notify path to known host file used for SFTP connection.</desc>
+                    <param desc="Path" multiplicity="1" name="path" type="string"/>
+                </event>
+                <event name="OnNewStatusCABundlePath">
+                    <desc>Notify path to CA bundle file to use for SFTP connection.</desc>
+                    <param desc="Path" multiplicity="1" name="path" type="string"/>
+                </event>
+                <event name="OnNewStatusClientCertificatePath">
+                    <desc>Notify path to client certificate to use for FTPS connection.</desc>
+                    <param desc="Path" multiplicity="1" name="path" type="string"/>
+                </event>
+                <event name="OnNewStatusClientCertificatePrivateKeyFilePath">
+                    <desc>Notify path to client certificate private key file.</desc>
+                    <param desc="Path" multiplicity="1" name="path" type="string"/>
+                </event>
+                <event name="OnNewStatusPeerVerification">
+                    <desc>Notify status to use peer verification for FTPS connection.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnNewStatusFTPSSecurityProtocol">
+                    <desc>Notify mode of security protocol to use for FTPS connection.</desc>
+                    <param desc="Mode" multiplicity="1" name="mode" type="string"/>
+                </event>
+                <event name="OnNewStatusFileTransferSuccess">
+                    <desc>Notify success status of file transfer.</desc>
+                    <param desc="Succes" multiplicity="1" name="success" type="bool"/>
+                    <param desc="Name of file (optionally with full file path on device) to transfer.&#10;Not supported in async mode." multiplicity="?" name="file" type="string"/>
+                </event>
                 <function name="pageCalled">
                     <desc>Function to register "OnResume" of the module UI (only as helper function).</desc>
                     <return desc="Empty string (only needed to simplify binding)." multiplicity="1" name="empty" type="string"/>
@@ -190,6 +240,7 @@ It is possible to register to events of other apps to put the received data to t
                     <desc>Send image.</desc>
                     <param alias="Image" desc="Image to send" multiplicity="1" name="img" type="object"/>
                     <param desc="" multiplicity="?" name="filename" type="string"/>
+                    <return desc="Success" multiplicity="1" name="success" type="bool"/>
                 </function>
                 <function name="getFTPStatus">
                     <desc>Get current FTP connection status.</desc>
@@ -216,6 +267,7 @@ If TRUE it will send the content in its own thread, but other apps can further r
                     <desc>Send data to connected FTP server.</desc>
                     <param desc="Data to send." multiplicity="1" name="data" type="auto"/>
                     <param desc="Filename to store send data on FTP server." multiplicity="1" name="filename" type="string"/>
+                    <return desc="Success of data transfer.&#10;Not reliable if running async mode. In this case register to 'OnNewStatusFileTransferSuccess' event to track success." multiplicity="1" name="success" type="bool"/>
                 </function>
                 <function name="setLoadOnReboot">
                     <desc>Configure if this module should load its saved parameters at app/device boot up.</desc>
@@ -288,6 +340,63 @@ If TRUE it will send the content in its own thread, but other apps can further r
                 <function name="resetModule">
                     <desc>Function to reset main configuration of module.</desc>
                 </function>
+                <function name="putFile">
+                    <desc>Function to put a local file to the FTP server.</desc>
+                    <param desc="Source path of the file to upload." multiplicity="1" name="localSource" type="string"/>
+                    <param desc="Target name of the file to upload. Can be a relative or absolute path in FTP path notation." multiplicity="?" name="destination" type="string"/>
+                    <return desc="Success" multiplicity="1" name="success" type="bool"/>
+                </function>
+                <function name="setLocalPath">
+                    <desc>Function to set path to local file to send to FTP server.</desc>
+                    <param desc="Path" multiplicity="1" name="path" type="string"/>
+                </function>
+                <function name="putFileViaUI">
+                    <desc>Function to send predefined file (see 'setLocalPath') to FTP server.</desc>
+                </function>
+                <function name="setSFTPPrivateKeyPath">
+                    <desc>Function to set path to private key file for SFTP connection.</desc>
+                    <param desc="Path" multiplicity="1" name="path" type="string"/>
+                </function>
+                <function name="setSFTPPrivateKeyPassword">
+                    <desc>Function to set password of private key file for SFTP connection.</desc>
+                    <param desc="Password" multiplicity="1" name="password" type="string"/>
+                </function>
+                <function name="setSFTPPublicKeyPath">
+                    <desc>Function to set path  to public key file for SFTP connection.</desc>
+                    <param desc="Path" multiplicity="1" name="path" type="string"/>
+                </function>
+                <function name="setKnownHostFilePath">
+                    <desc>Function to set path  to known host file for SFTP connection.</desc>
+                    <param desc="Path" multiplicity="1" name="path" type="string"/>
+                </function>
+                <function name="setCABundleFilePath">
+                    <desc>Function to set path  to CA bundle file for FTPS connection.</desc>
+                    <param desc="Path" multiplicity="1" name="path" type="string"/>
+                </function>
+                <function name="setClientCertificatePrivateKeyPath">
+                    <desc>Function to set path  to client certificate private key file for FTPS connection.</desc>
+                    <param desc="Path" multiplicity="1" name="path" type="string"/>
+                </function>
+                <function name="setClientCertificateFilePath">
+                    <desc>Function to set path to client certificate file for FTPS connection.</desc>
+                    <param desc="Path" multiplicity="1" name="path" type="string"/>
+                </function>
+                <function name="setClientCertificatePrivateKeyPassword">
+                    <desc>Function to set password of client certificate private key file for FTPS connection.</desc>
+                    <param desc="Password" multiplicity="1" name="password" type="string"/>
+                </function>
+                <function name="setPeerVerificationStatus">
+                    <desc>Function to set status to use peer verification for FTPS connection.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </function>
+                <function name="setFTPSSecurityProtolMode">
+                    <desc>Function to set mode of FTPS security protocol.</desc>
+                    <param desc="Mode" multiplicity="1" name="mode" type="string"/>
+                </function>
+                <function name="setFTPMode">
+                    <desc>Function to set FTP mode.</desc>
+                    <param desc="Mode" multiplicity="1" name="mode" type="string"/>
+                </function>
             </serves>
         </crown>
         <crown name="FTPClient_FC">
@@ -299,10 +408,10 @@ If TRUE it will send the content in its own thread, but other apps can further r
                 <serves>
                     <function name="create">
                         <desc>Internally used CSK_FlowConfig create function.</desc>
-                        <param desc="Data type of data1 ('DATA' per default).&#10;&#10;'DATA' = Store STRING data as .dat file&#10;&#10;'JPG' = Store data as JPG image file." multiplicity="?" name="dataType1" ref="CSK_FTPClient.DataType" type="enum"/>
-                        <param desc="Data type of data2 ('DATA' per default).&#10;&#10;'DATA' = Store STRING data as .dat file&#10;&#10;'JPG' = Store data as JPG image file." multiplicity="?" name="dataType2" ref="CSK_FTPClient.DataType" type="enum"/>
-                        <param desc="Data type of data3 ('DATA' per default).&#10;&#10;'DATA' = Store STRING data as .dat file&#10;&#10;'JPG' = Store data as JPG image file." multiplicity="?" name="dataType3" ref="CSK_FTPClient.DataType" type="enum"/>
-                        <param desc="Data type of data4 ('DATA' per default).&#10;&#10;'DATA' = Store STRING data as .dat file&#10;&#10;'JPG' = Store data as JPG image file." multiplicity="?" name="dataType4" ref="CSK_FTPClient.DataType" type="enum"/>
+                        <param desc="Data type of data1 ('DATA' per default).&#10;&#10;'DATA' = Store STRING data as .dat file&#10;&#10;'JPG' = Store data as JPG image file.&#10;&#10;'RAW_JPG' = Store binary data as JPG image file." multiplicity="?" name="dataType1" ref="CSK_FTPClient.DataType" type="enum"/>
+                        <param desc="Data type of data2 ('DATA' per default).&#10;&#10;'DATA' = Store STRING data as .dat file&#10;&#10;'JPG' = Store data as JPG image file.&#10;&#10;'RAW_JPG' = Store binary data as JPG image file." multiplicity="?" name="dataType2" ref="CSK_FTPClient.DataType" type="enum"/>
+                        <param desc="Data type of data3 ('DATA' per default).&#10;&#10;'DATA' = Store STRING data as .dat file&#10;&#10;'JPG' = Store data as JPG image file.&#10;&#10;'RAW_JPG' = Store binary data as JPG image file." multiplicity="?" name="dataType3" ref="CSK_FTPClient.DataType" type="enum"/>
+                        <param desc="Data type of data4 ('DATA' per default).&#10;&#10;'DATA' = Store STRING data as .dat file&#10;&#10;'JPG' = Store data as JPG image file.&#10;&#10;'RAW_JPG' = Store binary data as JPG image file." multiplicity="?" name="dataType4" ref="CSK_FTPClient.DataType" type="enum"/>
                         <param desc="Status if filename should be generated by date/time or is provided via source of data1 (TRUE per default)." multiplicity="?" name="autoName1" type="bool"/>
                         <param desc="Status if filename should be generated by date/time or is provided via source of data2 (TRUE per default)." multiplicity="?" name="autoName2" type="bool"/>
                         <param desc="Status if filename should be generated by date/time or is provided via source of data3 (TRUE per default)." multiplicity="?" name="autoName3" type="bool"/>
@@ -322,7 +431,7 @@ If TRUE it will send the content in its own thread, but other apps can further r
             </crown>
         </crown>
         <meta key="author">SICK AG</meta>
-        <meta key="version">4.1.0</meta>
+        <meta key="version">4.2.0</meta>
         <meta key="priority">low</meta>
         <meta key="copy-protected">false</meta>
         <meta key="read-protected">false</meta>

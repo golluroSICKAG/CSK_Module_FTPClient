@@ -15,15 +15,23 @@ local function getParameters()
   ftpClientParameters.serverIP = '192.168.0.201' -- IP of FTP server
   ftpClientParameters.imageName = 'unknown' -- Use to give a name for the image to send
   ftpClientParameters.isConnected = false -- Status if FTP connection should be established
-  ftpClientParameters.mode = 'FTP' -- FTP / SFTP -- Mode of FTP connection
-  if ftpClientParameters.mode == 'SFTP' then
-    if _G.availableAPIs.specific == true then
-      ftpClient_Model.ftpClient:setSecurityProtocol('SFTP')
-    end
-    ftpClientParameters.port = 22 -- FTP = 21 / SFTP = 22 -- FTP port to use
-  else
-    ftpClientParameters.port = 21 -- FTP = 21 / SFTP = 22
-  end
+  ftpClientParameters.mode = 'FTP' -- FTP / SFTP / FTPS -- Mode of FTP connection
+  ftpClientParameters.port = 21 -- FTP + FTPS_EXPLICIT = 21 / FTPS_IMPLICIT = 990 / SFTP = 22
+
+  ftpClientParameters.privateKeyPathSFTP = '' -- Path to private key for SFTP connection
+  ftpClientParameters.privateKeyPasswordSFTP = '' -- Optional passphrase of private key
+  ftpClientParameters.publicKeyFilePathSFTP = '' -- Optional path to public key for SFTP connection
+
+  ftpClientParameters.knownHostFilePathSFTP = '' -- Path to SSH known_hosts file (SFTP)
+
+  ftpClientParameters.caBundlePath = '' -- Path to certificate bundle in PEM format (used for FTPS)
+  ftpClientParameters.clientCertificatePath = '' -- Path to client certificate (used for FTPS)
+  ftpClientParameters.clientCertificateKeyFile = '' -- Path to clients prviate key file (used for FTPS)
+  ftpClientParameters.clientCertificateKeyPassword = '' -- Optional passphrase for private key (used for FTPS)
+
+  ftpClientParameters.peerVerification = false -- Status of peer verification if FTPS is active
+
+  ftpClientParameters.securityProtocolFTPS = 'FTPS_EXPLICIT' -- FTPS_EXPLICIT, FTPS_IMPLICIT
 
   ftpClientParameters.user = 'unknown' -- FTP user
   ftpClientParameters.password = 'pass'-- FTP password for user

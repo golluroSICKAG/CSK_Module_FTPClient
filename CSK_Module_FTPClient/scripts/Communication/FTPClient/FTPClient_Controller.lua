@@ -32,6 +32,18 @@ Script.serveEvent("CSK_FTPClient.OnNewPassword", "FTPClient_OnNewPassword")
 Script.serveEvent("CSK_FTPClient.OnNewPassiveModeStatus", "FTPClient_OnNewPassiveModeStatus")
 Script.serveEvent('CSK_FTPClient.OnNewStatusAsyncMode', 'FTPClient_OnNewStatusAsyncMode')
 Script.serveEvent('CSK_FTPClient.OnNewStatusVerboseMode', 'FTPClient_OnNewStatusVerboseMode')
+Script.serveEvent('CSK_FTPClient.OnNewStatusPathToLocalFile', 'FTPClient_OnNewStatusPathToLocalFile')
+
+Script.serveEvent('CSK_FTPClient.OnNewStatusMode', 'FTPClient_OnNewStatusMode')
+Script.serveEvent('CSK_FTPClient.OnNewStatusSFTPPrivateKeyPath', 'FTPClient_OnNewStatusSFTPPrivateKeyPath')
+Script.serveEvent('CSK_FTPClient.OnNewStatusClearPrivateKeyPassword', 'FTPClient_OnNewStatusClearPrivateKeyPassword')
+Script.serveEvent('CSK_FTPClient.OnNewStatusSFTPPublicKeyPath', 'FTPClient_OnNewStatusSFTPPublicKeyPath')
+Script.serveEvent('CSK_FTPClient.OnNewStatusKnownHostFilePath', 'FTPClient_OnNewStatusKnownHostFilePath')
+Script.serveEvent('CSK_FTPClient.OnNewStatusCABundlePath', 'FTPClient_OnNewStatusCABundlePath')
+Script.serveEvent('CSK_FTPClient.OnNewStatusClientCertificatePath', 'FTPClient_OnNewStatusClientCertificatePath')
+Script.serveEvent('CSK_FTPClient.OnNewStatusClientCertificatePrivateKeyFilePath', 'FTPClient_OnNewStatusClientCertificatePrivateKeyFilePath')
+Script.serveEvent('CSK_FTPClient.OnNewStatusPeerVerification', 'FTPClient_OnNewStatusPeerVerification')
+Script.serveEvent('CSK_FTPClient.OnNewStatusFTPSSecurityProtocol', 'FTPClient_OnNewStatusFTPSSecurityProtocol')
 
 Script.serveEvent("CSK_FTPClient.OnNewIPCheck", "FTPClient_OnNewIPCheck")
 
@@ -40,6 +52,8 @@ Script.serveEvent('CSK_FTPClient.OnNewStatusDataType', 'FTPClient_OnNewStatusDat
 Script.serveEvent('CSK_FTPClient.OnNewStatusAutoFilename', 'FTPClient_OnNewStatusAutoFilename')
 
 Script.serveEvent('CSK_FTPClient.OnNewStatusRegistrationList', 'FTPClient_OnNewStatusRegistrationList')
+
+Script.serveEvent('CSK_FTPClient.OnNewStatusFileTransferSuccess', 'FTPClient_OnNewStatusFileTransferSuccess')
 
 Script.serveEvent('CSK_FTPClient.OnNewStatusFlowConfigPriority', 'FTPClient_OnNewStatusFlowConfigPriority')
 Script.serveEvent("CSK_FTPClient.OnNewStatusLoadParameterOnReboot", "FTPClient_OnNewStatusLoadParameterOnReboot")
@@ -157,6 +171,18 @@ local function handleOnExpiredTmrFTPClient()
     Script.notifyEvent('FTPClient_OnNewStatusConnected', ftpClient_Model.ftpClient:isConnected())
   end
 
+  Script.notifyEvent('FTPClient_OnNewStatusMode', ftpClient_Model.parameters.mode)
+  Script.notifyEvent('FTPClient_OnNewStatusSFTPPrivateKeyPath', ftpClient_Model.parameters.privateKeyPathSFTP)
+  Script.notifyEvent('FTPClient_OnNewStatusClearPrivateKeyPassword', '')
+  Script.notifyEvent('FTPClient_OnNewStatusSFTPPublicKeyPath', ftpClient_Model.parameters.publicKeyFilePathSFTP)
+  Script.notifyEvent('FTPClient_OnNewStatusKnownHostFilePath', ftpClient_Model.parameters.knownHostFilePathSFTP)
+  Script.notifyEvent('FTPClient_OnNewStatusCABundlePath', ftpClient_Model.parameters.caBundlePath)
+  Script.notifyEvent('FTPClient_OnNewStatusClientCertificatePath', ftpClient_Model.parameters.clientCertificatePath)
+  Script.notifyEvent('FTPClient_OnNewStatusClientCertificatePrivateKeyFilePath', ftpClient_Model.parameters.clientCertificateKeyFile)
+  Script.notifyEvent('FTPClient_OnNewStatusPeerVerification', ftpClient_Model.parameters.peerVerification)
+  Script.notifyEvent('FTPClient_OnNewStatusFTPSSecurityProtocol', ftpClient_Model.parameters.securityProtocolFTPS)
+
+  Script.notifyEvent("FTPClient_OnNewStatusPathToLocalFile", ftpClient_Model.sourceFilePath)
   Script.notifyEvent("FTPClient_OnNewStatusRegisteredEventName", ftpClient_Model.registeredEventName)
   Script.notifyEvent("FTPClient_OnNewStatusDataType", ftpClient_Model.dataType)
   Script.notifyEvent("FTPClient_OnNewStatusAutoFilename", ftpClient_Model.autoFilename)
@@ -180,10 +206,7 @@ Script.serveFunction("CSK_FTPClient.pageCalled", pageCalled)
 -- ********************* UI Setting / Submit Functions Start ********************
 
 local function connectFTPClient()
-  ftpClient_Model.ftpClient:setIpAddress(ftpClient_Model.parameters.serverIP)
-  ftpClient_Model.ftpClient:setPort(ftpClient_Model.parameters.port)
-  ftpClient_Model.ftpClient:setPassiveMode(ftpClient_Model.parameters.passiveMode)
-  ftpClient_Model.ftpClient:setVerbose(ftpClient_Model.parameters.verboseMode)
+  ftpClient_Model.setupFTPClient()
 
   local success = ftpClient_Model.ftpClient:connect(ftpClient_Model.parameters.user, ftpClient_Model.parameters.password)
   if success then
@@ -236,6 +259,74 @@ local function getFTPPort()
   return ftpClient_Model.parameters.port
 end
 Script.serveFunction("CSK_FTPClient.getFTPPort", getFTPPort)
+
+local function setFTPMode(mode)
+  _G.logger:fine(nameOfModule .. ': Set mode to: ' .. tostring(mode))
+  ftpClient_Model.parameters.mode = mode
+  Script.notifyEvent('FTPClient_OnNewStatusMode', ftpClient_Model.parameters.mode)
+end
+Script.serveFunction('CSK_FTPClient.setFTPMode', setFTPMode)
+
+local function setSFTPPrivateKeyPath(path)
+  _G.logger:fine(nameOfModule .. ': Set path for SFTP private key file to : ' .. tostring(path))
+  ftpClient_Model.parameters.privateKeyPathSFTP = path
+end
+
+Script.serveFunction('CSK_FTPClient.setSFTPPrivateKeyPath', setSFTPPrivateKeyPath)
+
+local function setSFTPPrivateKeyPassword(password)
+  _G.logger:fine(nameOfModule .. ': Set password for SFTP private key.')
+  ftpClient_Model.parameters.privateKeyPasswordSFTP = password
+end
+Script.serveFunction('CSK_FTPClient.setSFTPPrivateKeyPassword', setSFTPPrivateKeyPassword)
+
+local function setSFTPPublicKeyPath(path)
+  _G.logger:fine(nameOfModule .. ': Set path for SFTP public key: ' .. tostring(path))
+  ftpClient_Model.parameters.publicKeyFilePathSFTP = path
+end
+Script.serveFunction('CSK_FTPClient.setSFTPPublicKeyPath', setSFTPPublicKeyPath)
+
+local function setKnownHostFilePath(path)
+  _G.logger:fine(nameOfModule .. ': Set path of known host file for SFTP to: ' .. tostring(path))
+  ftpClient_Model.parameters.knownHostFilePathSFTP = path
+end
+Script.serveFunction('CSK_FTPClient.setKnownHostFilePath', setKnownHostFilePath)
+
+local function setCABundleFilePath(path)
+  _G.logger:fine(nameOfModule .. ': Set path of CA bundle file for FTPS to: ' .. tostring(path))
+  ftpClient_Model.parameters.caBundlePath = path
+end
+Script.serveFunction('CSK_FTPClient.setCABundleFilePath', setCABundleFilePath)
+
+local function setClientCertificateFilePath(path)
+  _G.logger:fine(nameOfModule .. ': Set path of client certificate file for FTPS to: ' .. tostring(path))
+  ftpClient_Model.parameters.clientCertificatePath = path
+end
+Script.serveFunction('CSK_FTPClient.setClientCertificateFilePath', setClientCertificateFilePath)
+
+local function setClientCertificatePrivateKeyPath(path)
+  _G.logger:fine(nameOfModule .. ': Set path of private key file of client certificate for FTPS to: ' .. tostring(path))
+  ftpClient_Model.parameters.clientCertificateKeyFile = path
+end
+Script.serveFunction('CSK_FTPClient.setClientCertificatePrivateKeyPath', setClientCertificatePrivateKeyPath)
+
+local function setClientCertificatePrivateKeyPassword(password)
+  _G.logger:fine(nameOfModule .. ': Set password of private key file of client certificate for FTPS.')
+  ftpClient_Model.parameters.clientCertificateKeyPassword = password
+end
+Script.serveFunction('CSK_FTPClient.setClientCertificatePrivateKeyPassword', setClientCertificatePrivateKeyPassword)
+
+local function setPeerVerificationStatus(status)
+  _G.logger:fine(nameOfModule .. ': Set status of peer verification for FTPS to: ' .. tostring(status))
+  ftpClient_Model.parameters.peerVerification = status
+end
+Script.serveFunction('CSK_FTPClient.setPeerVerificationStatus', setPeerVerificationStatus)
+
+local function setFTPSSecurityProtolMode(mode)
+  _G.logger:fine(nameOfModule .. ': Set mode of FTPS security protocol to: ' .. tostring(mode))
+  ftpClient_Model.parameters.securityProtocolFTPS = mode
+end
+Script.serveFunction('CSK_FTPClient.setFTPSSecurityProtolMode', setFTPSSecurityProtolMode)
 
 local function setUsername(user)
   _G.logger:fine(nameOfModule .. ': Set username to: ' .. tostring(user))
@@ -297,6 +388,16 @@ local function setVerboseMode(status)
   ftpClient_Model.parameters.verboseMode = status
 end
 Script.serveFunction('CSK_FTPClient.setVerboseMode', setVerboseMode)
+
+local function setLocalPath(path)
+  ftpClient_Model.sourceFilePath = path
+end
+Script.serveFunction('CSK_FTPClient.setLocalPath', setLocalPath)
+
+local function putFileViaUI()
+  ftpClient_Model.putFile(ftpClient_Model.sourceFilePath)
+end
+Script.serveFunction('CSK_FTPClient.putFileViaUI', putFileViaUI)
 
 local function setRegistereEventName(name)
   _G.logger:fine(nameOfModule .. ': Set eventname to: ' .. tostring(name))

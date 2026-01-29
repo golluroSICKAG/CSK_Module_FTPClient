@@ -17,6 +17,8 @@ local function loadAPIs()
   DateTime = require 'API.DateTime'
   Engine = require 'API.Engine'
   Engine.AsyncFunction = require 'API.Engine.AsyncFunction'
+  Engine.AsyncFunction.Future = require 'API.Engine.AsyncFunction.Future'
+  File = require 'API.File'
 
   Object = require 'API.Object'
   Timer = require 'API.Timer'
@@ -37,6 +39,10 @@ end
 -- Function to load specific APIs
 local function loadSpecificAPIs()
   FTPClient = require 'API.FTPClient'
+end
+
+-- Function to load image specific APIs
+local function loadImageSpecificAPIs()
   Image = require 'API.Image'
   Image.Format = {}
   Image.Format.JPEG = require 'API.Image.Format.JPEG'
@@ -44,6 +50,7 @@ end
 
 availableAPIs.default = xpcall(loadAPIs, debug.traceback) -- TRUE if all default APIs were loaded correctly
 availableAPIs.specific = xpcall(loadSpecificAPIs, debug.traceback) -- TRUE if all specific APIs were loaded correctly
+availableAPIs.imageSpecific = xpcall(loadImageSpecificAPIs, debug.traceback) -- TRUE if all specific APIs were loaded correctly
 
 return availableAPIs
 --**************************************************************************

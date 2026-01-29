@@ -69,9 +69,9 @@ local function main()
   -- Set username / password via script
 
   CSK_FTPClient.setFTPServerIP('192.168.0.123')
-  CSK_FTPClient.setFTPPort = 21
-  CSK_FTPClient.setUsername = 'tester'
-  CSK_FTPClient.setPassword = 'password'
+  CSK_FTPClient.setFTPPort(21)
+  CSK_FTPClient.setUsername('tester')
+  CSK_FTPClient.setPassword('password')
   CSK_FTPClient.setPassiveMode(true)
 
   local success = CSK_FTPClient.connectFTPClient()

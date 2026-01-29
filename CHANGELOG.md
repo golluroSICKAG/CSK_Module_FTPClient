@@ -1,6 +1,20 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## Release 4.2.0
+
+### New features
+- Supporting now SFTP and FTPS
+- Function 'putFile' to transfer files to FTP server
+- Option to save data directly as JPG (without image processing)
+- Providing information of data transfer success via 'OnNewStatusFileTransferSuccess' event (can be used in async mode as well)
+
+### Improvements
+- "sendData"- and "sendImage"-function return now transfer success (does not work with async mode)
+
+### Bugfix
+- Async feature did not work
+
 ## Release 4.1.0
 
 ### New features
