@@ -259,6 +259,256 @@
                                         <layout-row id="RowLayout18" class="myCustomBorderBottom_CSK_Module_FTPClient"
                                             style="flex-grow: 0; flex-shrink: 0">
                                         </layout-row>
+                                        <layout-row id="RowLayout27">
+                                            <layout-column id="ColumnLayout31" style="align-items: stretch">
+                                                <davinci-drop-down id="DD_Mode" label="Mode">
+                                                    <davinci-option id="Option_FTP" value="FTP">
+                                                        <span>FTP</span>
+                                                    </davinci-option>
+                                                    <davinci-option id="Option_SFTP" value="SFTP">
+                                                        <span>SFTP</span>
+                                                    </davinci-option>
+                                                    <davinci-option id="Option_FTPS" value="FTPS">
+                                                        <span>FTPS</span>
+                                                    </davinci-option>
+                                                    <crown-edpws-binding property="value"
+                                                        name="CSK_FTPClient/OnNewStatusMode" update-on-resume>
+                                                    </crown-edpws-binding>
+                                                    <crown-binding event="change" name="CSK_FTPClient/setFTPMode"
+                                                        path="param/args/mode" auto-commit>
+                                                    </crown-binding>
+                                                </davinci-drop-down>
+                                            </layout-column>
+                                            <layout-column id="ColumnLayout32" style="align-items: stretch">
+                                            </layout-column>
+                                        </layout-row>
+                                        <stacked-view id="SV_Mode">
+                                            <stacked-pane id="SP_SFTP" value="SFTP">
+                                                <layout-row id="RowLayout32">
+                                                    <layout-column id="ColumnLayout38" style="align-items: stretch">
+                                                        <layout-row id="RowLayout28" style="align-items: center">
+                                                            <layout-column id="ColumnLayout34"
+                                                                style="align-items: stretch">
+                                                                <davinci-value-display id="VD_SFTP_PrivateKeyPath"
+                                                                    value="Private key:">
+                                                                </davinci-value-display>
+                                                            </layout-column>
+                                                            <layout-column id="ColumnLayout35"
+                                                                style="align-items: stretch">
+                                                                <davinci-text-field id="TF_FTPS_PrivateKey" type="text"
+                                                                    placeholder="Path to private key">
+                                                                    <crown-edpws-binding property="value"
+                                                                        name="CSK_FTPClient/OnNewStatusSFTPPrivateKeyPath"
+                                                                        update-on-resume>
+                                                                    </crown-edpws-binding>
+                                                                    <crown-binding event="change"
+                                                                        name="CSK_FTPClient/setSFTPPrivateKeyPath"
+                                                                        path="param/args/path" auto-commit>
+                                                                    </crown-binding>
+                                                                </davinci-text-field>
+                                                            </layout-column>
+                                                        </layout-row>
+                                                        <layout-row id="RowLayout33" style="align-items: center">
+                                                            <layout-column id="ColumnLayout39"
+                                                                style="align-items: stretch">
+                                                                <davinci-value-display id="VD_SFTP_PrivateKeyPassword"
+                                                                    value="Private key password (optional):">
+                                                                </davinci-value-display>
+                                                            </layout-column>
+                                                            <layout-column id="ColumnLayout40"
+                                                                style="align-items: stretch">
+                                                                <davinci-text-field id="TF_SFTP_PrviateKeyPassword"
+                                                                    type="text" placeholder="Password">
+                                                                    <crown-on property="value"
+                                                                        crown-event="CSK_FTPClient/OnNewStatusClearPrivateKeyPassword">
+                                                                    </crown-on>
+                                                                    <crown-binding event="change"
+                                                                        name="CSK_FTPClient/setSFTPPrivateKeyPassword"
+                                                                        path="param/args/password" auto-commit>
+                                                                    </crown-binding>
+                                                                </davinci-text-field>
+                                                            </layout-column>
+                                                        </layout-row>
+                                                        <layout-row id="RowLayout35" style="align-items: center">
+                                                            <layout-column id="ColumnLayout41"
+                                                                style="align-items: stretch">
+                                                                <davinci-value-display id="VD_SFTP_PublicKeyPath"
+                                                                    value="Public key (optional):">
+                                                                </davinci-value-display>
+                                                            </layout-column>
+                                                            <layout-column id="ColumnLayout42"
+                                                                style="align-items: stretch">
+                                                                <davinci-text-field id="TF_SFTP_PublicKeyPath"
+                                                                    type="text" placeholder="Path to public key">
+                                                                    <crown-edpws-binding property="value"
+                                                                        name="CSK_FTPClient/OnNewStatusSFTPPublicKeyPath"
+                                                                        update-on-resume>
+                                                                    </crown-edpws-binding>
+                                                                    <crown-binding event="change"
+                                                                        name="CSK_FTPClient/setSFTPPublicKeyPath"
+                                                                        path="param/args/path" auto-commit>
+                                                                    </crown-binding>
+                                                                </davinci-text-field>
+                                                            </layout-column>
+                                                        </layout-row>
+                                                        <layout-row id="RowLayout36" style="align-items: center">
+                                                            <layout-column id="ColumnLayout43"
+                                                                style="align-items: stretch">
+                                                                <davinci-value-display id="VD_KnownHostFile"
+                                                                    value="Known host file:">
+                                                                </davinci-value-display>
+                                                            </layout-column>
+                                                            <layout-column id="ColumnLayout44"
+                                                                style="align-items: stretch">
+                                                                <davinci-text-field id="TF_KnownHostFile" type="text"
+                                                                    placeholder="Path to known host file">
+                                                                    <crown-edpws-binding property="value"
+                                                                        name="CSK_FTPClient/OnNewStatusKnownHostFilePath"
+                                                                        update-on-resume>
+                                                                    </crown-edpws-binding>
+                                                                    <crown-binding event="change"
+                                                                        name="CSK_FTPClient/setKnownHostFilePath"
+                                                                        path="param/args/path" auto-commit>
+                                                                    </crown-binding>
+                                                                </davinci-text-field>
+                                                            </layout-column>
+                                                        </layout-row>
+                                                    </layout-column>
+                                                </layout-row>
+                                            </stacked-pane>
+                                            <stacked-pane id="SP_FTPS" value="FTPS">
+                                                <layout-row id="RowLayout31">
+                                                    <layout-column id="ColumnLayout36" style="align-items: stretch">
+                                                        <layout-row id="RowLayout41" style="align-items: center">
+                                                            <layout-column id="ColumnLayout33"
+                                                                style="align-items: stretch">
+                                                                <davinci-value-display id="VD_FTPS_SecurityProtocol"
+                                                                    value="Security protocol:">
+                                                                </davinci-value-display>
+                                                            </layout-column>
+                                                            <layout-column id="ColumnLayout52"
+                                                                style="align-items: stretch">
+                                                                <davinci-drop-down id="DD_SecurityProtocol">
+                                                                    <davinci-option id="Option_FTPS_Explicit"
+                                                                        value="FTPS_EXPLICIT">
+                                                                        <span>FTPS_EXPLICIT</span>
+                                                                    </davinci-option>
+                                                                    <davinci-option id="Option_FTPS_Implicit"
+                                                                        value="FTPS_IMPLICIT">
+                                                                        <span>FTPS_IMPLICIT</span>
+                                                                    </davinci-option>
+                                                                    <crown-edpws-binding property="value"
+                                                                        name="CSK_FTPClient/OnNewStatusFTPSSecurityProtocol"
+                                                                        update-on-resume>
+                                                                    </crown-edpws-binding>
+                                                                    <crown-binding event="change"
+                                                                        name="CSK_FTPClient/setFTPSSecurityProtolMode"
+                                                                        path="param/args/mode" auto-commit>
+                                                                    </crown-binding>
+                                                                </davinci-drop-down>
+                                                            </layout-column>
+                                                        </layout-row>
+                                                        <layout-row id="RowLayout37" style="align-items: center">
+                                                            <layout-column id="ColumnLayout37"
+                                                                style="align-items: stretch">
+                                                                <davinci-value-display id="VD_ClientCertificate"
+                                                                    value="Client certificate:">
+                                                                </davinci-value-display>
+                                                            </layout-column>
+                                                            <layout-column id="ColumnLayout45"
+                                                                style="align-items: stretch">
+                                                                <davinci-text-field id="TF_ClientCertificatePath"
+                                                                    type="text"
+                                                                    placeholder="Path to client certificate">
+                                                                    <crown-edpws-binding property="value"
+                                                                        name="CSK_FTPClient/OnNewStatusClientCertificatePath"
+                                                                        update-on-resume>
+                                                                    </crown-edpws-binding>
+                                                                </davinci-text-field>
+                                                            </layout-column>
+                                                        </layout-row>
+                                                        <layout-row id="RowLayout38" style="align-items: center">
+                                                            <layout-column id="ColumnLayout46"
+                                                                style="align-items: stretch">
+                                                                <davinci-value-display
+                                                                    id="VD_ClientCertificatePrivateKey"
+                                                                    value="Client certificate private key (optional):">
+                                                                </davinci-value-display>
+                                                            </layout-column>
+                                                            <layout-column id="ColumnLayout47"
+                                                                style="align-items: stretch">
+                                                                <davinci-text-field id="TF_ClientCertificatePrivateKey"
+                                                                    type="text"
+                                                                    placeholder="Path to private key file of client certificate">
+                                                                    <crown-edpws-binding property="value"
+                                                                        name="CSK_FTPClient/OnNewStatusClientCertificatePrivateKeyFilePath"
+                                                                        update-on-resume>
+                                                                    </crown-edpws-binding>
+                                                                    <crown-binding event="change"
+                                                                        name="CSK_FTPClient/setClientCertificatePrivateKeyPath"
+                                                                        path="param/args/path" auto-commit>
+                                                                    </crown-binding>
+                                                                </davinci-text-field>
+                                                            </layout-column>
+                                                        </layout-row>
+                                                        <layout-row id="RowLayout39" style="align-items: center">
+                                                            <layout-column id="ColumnLayout48"
+                                                                style="align-items: stretch">
+                                                                <davinci-value-display
+                                                                    id="VD_FTPS_ClientCertificatePrivateKeyPassword"
+                                                                    value="Private key password (optional):">
+                                                                </davinci-value-display>
+                                                            </layout-column>
+                                                            <layout-column id="ColumnLayout49"
+                                                                style="align-items: stretch">
+                                                                <davinci-text-field id="TF_FTPS_PrivateKeyPassword"
+                                                                    type="text" placeholder="Password of private key">
+                                                                    <crown-edpws-binding property="value"
+                                                                        name="CSK_FTPClient/OnNewStatusClearPrivateKeyPassword"
+                                                                        update-on-resume>
+                                                                    </crown-edpws-binding>
+                                                                    <crown-binding event="change"
+                                                                        name="CSK_FTPClient/setClientCertificatePrivateKeyPassword"
+                                                                        path="param/args/password" auto-commit>
+                                                                    </crown-binding>
+                                                                </davinci-text-field>
+                                                            </layout-column>
+                                                        </layout-row>
+                                                        <layout-row id="RowLayout40" style="align-items: center">
+                                                            <layout-column id="ColumnLayout50"
+                                                                style="align-items: stretch">
+                                                                <davinci-value-display id="VD_FTPS_PeerVerfication"
+                                                                    value="Peer verification:">
+                                                                </davinci-value-display>
+                                                            </layout-column>
+                                                            <layout-column id="ColumnLayout51"
+                                                                style="align-items: flex-end">
+                                                                <davinci-toggle-switch id="TS_PeerVerification">
+                                                                    <crown-edpws-binding property="checked"
+                                                                        name="CSK_FTPClient/OnNewStatusPeerVerification"
+                                                                        update-on-resume>
+                                                                    </crown-edpws-binding>
+                                                                    <crown-binding event="change"
+                                                                        name="CSK_FTPClient/setPeerVerificationStatus"
+                                                                        path="param/args/status" auto-commit>
+                                                                    </crown-binding>
+                                                                </davinci-toggle-switch>
+                                                            </layout-column>
+                                                        </layout-row>
+                                                    </layout-column>
+                                                </layout-row>
+                                            </stacked-pane>
+                                            <stacked-pane id="SP_FTP" value="FTP"></stacked-pane>
+                                            <crown-edpws-binding property="value" name="CSK_FTPClient/OnNewStatusMode"
+                                                update-on-resume>
+                                            </crown-edpws-binding>
+                                        </stacked-view>
+                                        <layout-row id="RowLayout30" class="myCustomSpacerVert10_CSK_Module_FTPClient"
+                                            style="flex-grow: 0; flex-shrink: 0">
+                                        </layout-row>
+                                        <layout-row id="RowLayout19" class="myCustomBorderBottom_CSK_Module_FTPClient"
+                                            style="flex-grow: 0; flex-shrink: 0">
+                                        </layout-row>
                                         <layout-row id="RowLayout3" style="justify-content: space-evenly">
                                             <layout-column id="ColumnLayout20">
                                                 <davinci-checkbox id="CB_PassiveMode"
@@ -297,7 +547,7 @@
                                             </layout-column>
                                             <layout-column id="ColumnLayout22"></layout-column>
                                         </layout-row>
-                                        <layout-row id="RowLayout19" class="myCustomBorderBottom_CSK_Module_FTPClient"
+                                        <layout-row id="RowLayout29" class="myCustomBorderBottom_CSK_Module_FTPClient"
                                             style="flex-grow: 0; flex-shrink: 0">
                                         </layout-row>
                                         <layout-row id="RowLayout17" style="align-items: center">
@@ -427,11 +677,18 @@
                                                                 <layout-row id="RowLayout9" style="align-items: center">
                                                                     <davinci-drop-down id="DD_DataType"
                                                                         label="Data type">
-                                                                        <davinci-option id="Option_DATA" value="DATA">
+                                                                        <davinci-option id="Option_DATA" value="DATA"
+                                                                            title="Save data with .dat file extension.">
                                                                             <span>DATA</span>
                                                                         </davinci-option>
-                                                                        <davinci-option id="Option_JPG" value="JPG">
+                                                                        <davinci-option id="Option_JPG" value="JPG"
+                                                                            title="First convert data to JPG and save it then with .jpg file extension.">
                                                                             <span>JPG</span>
+                                                                        </davinci-option>
+                                                                        <davinci-option id="Option_RAW_JPG"
+                                                                            value="RAW_JPG"
+                                                                            title="Directly save data with .jpg file extension. No prior JPG compression.">
+                                                                            <span>RAW_JPG</span>
                                                                         </davinci-option>
                                                                         <crown-edpws-binding property="value"
                                                                             name="CSK_FTPClient/OnNewStatusDataType"
